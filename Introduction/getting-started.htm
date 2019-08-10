@@ -1,0 +1,70 @@
+<button id="clear-button">Restart</button>
+
+<div id="output">
+    
+</div>
+<input id="input" type="text" />
+<button id="input-button">Go</button>
+
+<script>
+function setInput(text) {
+    var message = document.createElement("p");
+    message.style.cssText = "color: blue; font-weight: bold";
+    message.innerText = text;
+    document.getElementById('output').appendChild(message);
+}  
+function greet(person) {
+    if (person === "Dylan") {
+        say("coyi");
+        setInput("What does COYI mean?");
+        state = whatCOYI;
+    } else if (person === "Isaac") {
+        say("man city")
+    } else {
+        say(`Start coding ${person}`);
+    }
+}
+function whatCOYI(password) {
+    if (password.toUpperCase() === "Come on you irons".toUpperCase()) {
+        say("You got it!!!");
+    } else {
+        say("you need to go to westham school");
+    }
+}
+function playerSay(text) {
+    var message = document.createElement("p");
+    message.innerText = text;
+    document.getElementById('output').appendChild(message);
+}
+function say(text) {
+    var message = document.createElement("p");
+    message.style.cssText = "color: blue; weight: bold";
+    message.innerText = text;
+    document.getElementById('output').appendChild(message);
+}
+
+document.getElementById("input").addEventListener('keypress', function (e) {
+    var key = e.which || e.keyCode;
+    if (key === 13) { // 13 is enter
+        var text = document.getElementById("input").value;
+        playerSay(text)
+        state(text);
+        return false;
+    }    
+});
+document.getElementById("input-button").onclick = function() {
+    var text = document.getElementById("input").value;
+    playerSay(text)
+    state(text);
+}
+document.getElementById("clear-button").onclick = function() {
+    document.getElementById('output').innerHTML = "";
+    var state = greet;
+    setInput("Who wants to code?");
+}
+
+var state = greet;
+setInput("Who wants to code?");
+
+
+</script>
