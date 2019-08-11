@@ -7,6 +7,16 @@
 <button id="input-button">Go</button>
 
 <script>
+var state;
+function matchText(input, expected) {
+    return input.toUpperCase().startsWith(expected.toUpperCase());
+}
+function nextLevel(response, level, nextQuestion) {
+    if(response) say(response);
+    state = level;
+    setInput(nextQuestion);   
+}
+
 function setInput(text) {
     var message = document.createElement("p");
     message.style.cssText = "color: blue; font-weight: bold";
@@ -14,21 +24,45 @@ function setInput(text) {
     document.getElementById('output').appendChild(message);
 }  
 function greet(person) {
-    if (person === "Dylan") {
-        say("coyi");
-        setInput("What does COYI mean?");
-        state = whatCOYI;
-    } else if (person === "Isaac") {
+    if (matchText(person,"Dylan")) {
+        nextLevel("coyi", whatCOYI, "What does COYI mean?");
+    } else if (matchText(person,"Isaac")) {
         say("man city")
     } else {
         say(`Start coding ${person}`);
     }
 }
 function whatCOYI(password) {
-    if (password.toUpperCase() === "Come on you irons".toUpperCase()) {
-        say("You got it!!!");
+    if (matchText(password,"Come on you irons")) {
+        nextLevel(`You got it!!!
+        Okay so you are getting ready for the match.`, 
+        cokeOrfanta, 
+        "Are you going to drink COKE ZERO or FANTA?");
     } else {
         say("you need to go to westham school");
+    }
+}
+function cokeOrfanta(choice) {
+    if (matchText(choice,"coke")) {
+        say("seems like you aren't going to bed tonight");
+    } else if (matchText(choice,"fanta")) {
+        say("oooooooooooooookkkkkkkkkkkkkk");
+    } else {
+        say("That wasn't a choice >:(");
+    }
+    nextLevel(`The ref comes in to lead you onto the pitch.`, 
+        followref, 
+        "do you follow him yes or no?");
+}
+function followref(choice) {
+    if (matchText(choice,"yes")) {
+        nextLevel(`the ref leeds you on to the pitch and it is westham vs mancity`, 
+        coinToss, 
+        "Heads or tails?");
+    } else if (matchText(choice,"no")) {
+        nextLevel(`
+        You get fired. Your career is over. You end up sweeping poo away from skanky toilets in a hautnted house at 3am. GAME OVER!
+        `, greet, "Who are you?");
     }
 }
 function playerSay(text) {
@@ -59,12 +93,10 @@ document.getElementById("input-button").onclick = function() {
 }
 document.getElementById("clear-button").onclick = function() {
     document.getElementById('output').innerHTML = "";
-    var state = greet;
-    setInput("Who wants to code?");
+    nextLevel(null, greet, "Who are you?");
 }
 
-var state = greet;
-setInput("Who wants to code?");
+nextLevel(null, greet, "Who are you?");
 
 
 </script>
